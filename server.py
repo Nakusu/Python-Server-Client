@@ -9,7 +9,7 @@ def main(ip, port):
   while True:
     conct.listen(5)
     client, address = conct.accept()
-    print("- New connection")
+    print("- New connection from ", address[0])
 
     response = client.recv(255)
     if response != "":
@@ -19,11 +19,12 @@ def main(ip, port):
         client.send(content.encode())
         response = client.recv(255).decode()
         print("Client : ", response)
-        sys.exit(0)
     elif response == "close" or response == "end":
       client.close
       conct.close
-      print("Close")
+      print("Close of the server !")
+      sys.exit(0)
+
           
 
   client.close()

