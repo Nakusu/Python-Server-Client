@@ -9,8 +9,15 @@ command = ""
 end = True
 clients = []
 
+class ClientCo:
+  def __init__(self):
+    self.thread = None
+    self.active = True
+    self.ips = []
+  def setThread(self, thread: Thread):
+    self.thread = thread
 
-def clientThread(client: socket, address):
+def clientThread(client: socket, address, obj: ClientCo):
   global end
   global command
   print("- New connection from ", address[0])
@@ -37,10 +44,11 @@ def serverMonitoring(conct: socket):
   while end != False:
     try:
       client, address = conct.accept()
-      tmp = Thread(target=clientThread, args=[client, address])
-      clients.append(tmp)
+      obj = ClientCo()
+      tmp = Thread(target=clientThread, args=[client, address, obj])
       tmp.start()
-      tmp.is_alive()
+      obj.setThread(tmp)
+      clients.append(obj)
     except:
       continue
   sys.exit(0)
